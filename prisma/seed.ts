@@ -622,6 +622,104 @@ async function seedMenu(orgId: string) {
   console.log(`✓ menu (${categoryNames.length} categories, ${ingredientDefs.length} ingredients, ${productDefs.length + 1} products, recipes & combo)`);
 }
 
+// ---------------------------------------------------------------------------
+// Suppliers & opening inventory (Phase 5)
+// ---------------------------------------------------------------------------
+
+async function seedSuppliers(orgId: string) {
+  const suppliers = [
+    {
+      name: "Boucherie El Baraka",
+      contactName: "Rachid Hamidi",
+      phone: "+213 550 11 22 33",
+      address: "Marché Clauzel, Alger",
+      notes: "Viandes fraîches — livraison quotidienne",
+    },
+    {
+      name: "SARL Distrib Food",
+      contactName: "Samira Bouzid",
+      phone: "+213 660 44 55 66",
+      address: "Zone industrielle, Rouiba",
+      notes: "Épicerie, surgelés, boissons, emballages",
+    },
+  ];
+  for (const s of suppliers) {
+    const existing = await db.supplier.findFirst({ where: { orgId, name: s.name } });
+    if (!existing) await db.supplier.create({ data: { orgId, ...s } });
+  }
+  console.log(`✓ suppliers (${suppliers.length})`);
+}
+
+/**
+ * Opening stock — created through PROPER ledger movements (never silent writes).
+ * [ingredient name, opening qty (base units), min qty (base units)]
+ */
+async function seedInventory(orgId: string, branchId: string, branchLabel: string, ownerUserId: string) {
+  const alreadySeeded = await db.stockMovement.count({ where: { branchId, reason: "opening" } });
+  if (alreadySeeded > 0) {
+    console.log(`✓ inventory for ${branchLabel} (already seeded)`);
+    return;
+  }
+
+  const stock: [string, number, number][] = [
+    ["Pain burger", 80, 20],
+    ["Galette tacos", 60, 15],
+    ["Pâton pizza", 40, 10],
+    ["Baguette", 30, 10],
+    ["Viande hachée", 12000, 5000], // 12 kg, min 5 kg (spec §11 example)
+    ["Escalope de poulet", 10000, 3000],
+    ["Fromage cheddar", 3000, 800],
+    ["Gruyère râpé", 2500, 600],
+    ["Mozzarella", 4000, 1000],
+    ["Mix 4 fromages", 2000, 500],
+    ["Œuf", 60, 12],
+    ["Tomate fraîche", 5000, 1000],
+    ["Oignon", 4000, 800],
+    ["Laitue", 2000, 400],
+    ["Sauce tomate pizza", 3000, 500],
+    ["Sauce algérienne", 2500, 500],
+    ["Mayonnaise", 2000, 400],
+    ["Ketchup", 2000, 400],
+    ["Sauce BBQ", 1500, 300],
+    ["Frites surgelées", 15000, 4000],
+    ["Huile de friture", 10000, 2000],
+    ["Coca-Cola 33cl", 96, 24],
+    ["Eau minérale 50cl", 72, 24],
+    ["Emballage burger", 150, 40],
+    ["Emballage tacos", 120, 30],
+    ["Boîte pizza", 60, 20],
+    ["Barquette frites", 150, 40],
+  ];
+
+  for (const [name, qty, minQty] of stock) {
+    const ingredient = await db.ingredient.findFirst({ where: { orgId, name } });
+    if (!ingredient) continue;
+    await db.$transaction(async (tx) => {
+      await tx.inventory.upsert({
+        where: { branchId_ingredientId: { branchId, ingredientId: ingredient.id } },
+        update: { qtyOnHand: qty, minQty },
+        create: { branchId, ingredientId: ingredient.id, qtyOnHand: qty, minQty },
+      });
+      await tx.stockMovement.create({
+        data: {
+          orgId,
+          branchId,
+          ingredientId: ingredient.id,
+          type: "adjustment",
+          qtyBefore: 0,
+          qtyChange: qty,
+          qtyAfter: qty,
+          unitCostMilli: ingredient.avgCostMilli,
+          totalCostCentimes: Math.round((qty * ingredient.avgCostMilli) / 1000),
+          userId: ownerUserId,
+          reason: "opening",
+        },
+      });
+    });
+  }
+  console.log(`✓ inventory for ${branchLabel} (${stock.length} ingredients, opening movements)`);
+}
+
 async function main() {
   console.log("Seeding RestoPOS demo data…");
   await seedPermissions();
@@ -634,6 +732,10 @@ async function main() {
   await seedBranchFixtures(branch2.id, branch2.name);
   await seedSettings(org.id);
   await seedMenu(org.id);
+  await seedSuppliers(org.id);
+  const owner = await db.user.findUniqueOrThrow({ where: { email: "owner@fastfood.dz" } });
+  await seedInventory(org.id, branch1.id, branch1.name, owner.id);
+  await seedInventory(org.id, branch2.id, branch2.name, owner.id);
   console.log("Done.");
 }
 
