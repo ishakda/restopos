@@ -41,10 +41,10 @@ export const NAV_GROUPS: NavGroup[] = [
     key: "groupOperations",
     items: [
       { key: "dashboard", href: "/", icon: "dashboard", permission: "dashboard.view", implemented: true },
-      { key: "pos", href: "/pos", icon: "pos", permission: "pos.use", implemented: false },
-      { key: "orders", href: "/orders", icon: "orders", permission: "orders.view", implemented: false },
+      { key: "pos", href: "/pos", icon: "pos", permission: "pos.use", implemented: true },
+      { key: "orders", href: "/orders", icon: "orders", permission: "orders.view", implemented: true },
       { key: "kitchen", href: "/kitchen", icon: "kitchen", permission: "kitchen.view", implemented: false },
-      { key: "tables", href: "/tables", icon: "tables", permission: "tables.view", implemented: false },
+      { key: "tables", href: "/tables", icon: "tables", permission: "tables.view", implemented: true },
     ],
   },
   {
