@@ -48,6 +48,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { OrderDetailSheet, type OrderSheetPermissions } from "@/components/orders/order-detail-sheet";
+import { useDebouncedRefresh, useOrderEvents } from "@/components/realtime/use-order-events";
 
 export interface FloorOrder {
   id: string;
@@ -103,6 +104,10 @@ export function TablesView({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  // Live floor: refresh on any branch order/payment event
+  const debouncedRefresh = useDebouncedRefresh(() => router.refresh(), 1000);
+  useOrderEvents(branchId, () => debouncedRefresh());
 
   const [editOpen, setEditOpen] = React.useState(false);
   const [editing, setEditing] = React.useState<FloorTable | null>(null);

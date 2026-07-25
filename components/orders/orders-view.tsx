@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { OrderDetailSheet, type OrderSheetPermissions } from "@/components/orders/order-detail-sheet";
+import { useDebouncedRefresh, useOrderEvents } from "@/components/realtime/use-order-events";
 
 export interface OrderListRow {
   id: string;
@@ -46,6 +47,7 @@ export function OrdersView({
   rows,
   detail,
   methods,
+  branchId,
   locale,
   filters,
   permissions,
@@ -53,6 +55,7 @@ export function OrdersView({
   rows: OrderListRow[];
   detail: OrderDetailData | null;
   methods: PaymentMethodOption[];
+  branchId: string;
   locale: Locale;
   filters: { status: string | null; type: string | null; q: string };
   permissions: OrderSheetPermissions;
@@ -64,6 +67,10 @@ export function OrdersView({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [search, setSearch] = React.useState(filters.q);
+
+  // Live list: refresh on any branch order/payment event
+  const debouncedRefresh = useDebouncedRefresh(() => router.refresh(), 1000);
+  useOrderEvents(branchId, () => debouncedRefresh());
 
   function setParam(key: string, value: string | null) {
     const params = new URLSearchParams(searchParams.toString());

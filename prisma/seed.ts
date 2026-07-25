@@ -201,6 +201,18 @@ async function seedBranchFixtures(branchId: string, branchLabel: string) {
     });
   }
 
+  const printers = [
+    { name: "Caisse", type: "receipt", paperWidth: 80, isDefault: true },
+    { name: "Cuisine", type: "kitchen", paperWidth: 80, isDefault: true },
+  ];
+  for (const p of printers) {
+    await db.printer.upsert({
+      where: { branchId_name: { branchId, name: p.name } },
+      update: {},
+      create: { branchId, ...p },
+    });
+  }
+
   const tables = [
     { name: "T-01", seats: 2, zone: "Salle", posX: 0, posY: 0 },
     { name: "T-02", seats: 2, zone: "Salle", posX: 1, posY: 0 },
@@ -218,7 +230,7 @@ async function seedBranchFixtures(branchId: string, branchLabel: string) {
       create: { branchId, ...t },
     });
   }
-  console.log(`✓ fixtures for ${branchLabel} (register, zones, ${tables.length} tables)`);
+  console.log(`✓ fixtures for ${branchLabel} (register, zones, printers, ${tables.length} tables)`);
 }
 
 async function seedSettings(orgId: string) {

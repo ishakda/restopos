@@ -5,6 +5,7 @@ import { Prisma } from "@prisma/client";
 
 import { db } from "@/lib/db";
 import { writeAudit } from "@/lib/audit";
+import { emitOrderEvent } from "@/lib/events";
 import { assertPermission, ForbiddenError, type AuthContext } from "@/lib/auth/session";
 import { fail, ok, type ActionResult } from "@/lib/action-result";
 import { addPaymentSchema, refundSchema, type AddPaymentInput, type RefundInput } from "@/lib/validation/orders";
@@ -121,12 +122,30 @@ export async function addPaymentAction(input: AddPaymentInput): Promise<ActionRe
           paidAmount,
           remaining: remainingDue(order.total, paidAmount),
           paymentStatus,
+          _branchId: order.branchId,
+          _number: order.number,
+          _type: order.type,
         };
       });
 
+      emitOrderEvent({
+        type: "payment.taken",
+        branchId: result._branchId,
+        orderId: data.orderId,
+        number: result._number,
+        status: result.paymentStatus,
+        orderType: result._type,
+      });
       revalidatePath("/orders");
       revalidatePath("/tables");
-      return ok(result);
+      return ok({
+        paymentId: result.paymentId,
+        appliedAmount: result.appliedAmount,
+        changeAmount: result.changeAmount,
+        paidAmount: result.paidAmount,
+        remaining: result.remaining,
+        paymentStatus: result.paymentStatus,
+      });
     } catch (e) {
       if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
         const winner = await db.payment.findUnique({

@@ -322,6 +322,11 @@
     "discountReason": "Reason (recommended)",
     "discountPreview": "Computed discount",
     "removeDiscount": "Remove",
+    "orderReady": "Order #{number} READY!",
+    "online": "Online",
+    "offline": "Offline",
+    "printKitchen": "Kitchen ticket",
+    "printReceipt": "Receipt",
     "errors": {
       "product_unavailable": "A product in the cart is no longer available.",
       "modifiers_invalid": "Invalid options on an item.",
@@ -412,6 +417,8 @@
     "refundAmount": "Amount (max {max})",
     "refundReason": "Refund reason",
     "confirmRefund": "Refund",
+    "printReceipt": "Print receipt",
+    "printKitchen": "Kitchen ticket",
     "errors": {
       "unpaid_balance": "Balance due",
       "refund_first": "Refund the payments before cancelling.",
@@ -457,5 +464,33 @@
       "table_name_taken": "This table name already exists.",
       "table_not_ready": "Table is being cleaned."
     }
+  },
+  "kitchen": {
+    "title": "Kitchen",
+    "back": "Back",
+    "online": "Online",
+    "offline": "Offline",
+    "empty": "No orders",
+    "tableShort": "Table",
+    "min": "min",
+    "actionFailed": "Action failed.",
+    "columns": {
+      "confirmed": "New",
+      "preparing": "Preparing",
+      "ready": "Ready"
+    },
+    "actions": {
+      "start": "START PREPARING",
+      "ready": "READY",
+      "recall": "Recall"
+    }
+  },
+  "print": {
+    "print": "Print",
+    "close": "Close",
+    "cashier": "Cashier",
+    "change": "Change given",
+    "kitchenTicket": "KITCHEN",
+    "nothingForPrinter": "No items for this printer."
   }
 }

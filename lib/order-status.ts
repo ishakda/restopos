@@ -12,7 +12,8 @@ export const ORDER_STATUS_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
   new: ["confirmed", "cancelled"],
   confirmed: ["preparing", "ready", "cancelled"],
   preparing: ["ready", "cancelled"],
-  ready: ["served", "out_for_delivery", "completed", "cancelled"],
+  // "preparing" here = kitchen recall (READY → back on the pass)
+  ready: ["served", "out_for_delivery", "completed", "preparing", "cancelled"],
   served: ["completed", "cancelled"],
   out_for_delivery: ["completed", "cancelled"],
   completed: [],

@@ -4,7 +4,7 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
-import { Ban, Banknote, ChevronRight, HandCoins, ReceiptText, Scissors, StickyNote } from "lucide-react";
+import { Ban, Banknote, ChefHat, ChevronRight, HandCoins, Printer, ReceiptText, Scissors, StickyNote } from "lucide-react";
 
 import { cancelOrderAction, splitOrderAction, updateOrderStatusAction } from "@/lib/actions/orders";
 import { refundOrderAction } from "@/lib/actions/payments";
@@ -277,6 +277,20 @@ export function OrderDetailSheet({
 
           {/* Actions */}
           <div className="grid gap-2 border-t p-4">
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" className="flex-1" asChild>
+                <a href={`/print/receipt/${detail.id}`} target="_blank" rel="noopener noreferrer">
+                  <Printer />
+                  {t("printReceipt")}
+                </a>
+              </Button>
+              <Button variant="outline" size="sm" className="flex-1" asChild>
+                <a href={`/print/kitchen/${detail.id}`} target="_blank" rel="noopener noreferrer">
+                  <ChefHat />
+                  {t("printKitchen")}
+                </a>
+              </Button>
+            </div>
             {open && remaining > 0 && permissions.pay && (
               <Button size="lg" onClick={() => setPayOpen(true)}>
                 <Banknote />

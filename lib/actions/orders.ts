@@ -5,7 +5,13 @@ import { Prisma } from "@prisma/client";
 
 import { db } from "@/lib/db";
 import { writeAudit } from "@/lib/audit";
-import { assertPermission, ForbiddenError, type AuthContext } from "@/lib/auth/session";
+import { emitOrderEvent } from "@/lib/events";
+import {
+  assertAnyPermission,
+  assertPermission,
+  ForbiddenError,
+  type AuthContext,
+} from "@/lib/auth/session";
 import { fail, ok, type ActionResult } from "@/lib/action-result";
 import {
   cancelOrderSchema,
@@ -439,6 +445,14 @@ export async function createOrderAction(
         return order;
       });
 
+      emitOrderEvent({
+        type: "order.created",
+        branchId,
+        orderId: created.id,
+        number: created.number,
+        status: created.status,
+        orderType: created.type,
+      });
       revalidateOps();
       return ok({
         id: created.id,
@@ -485,9 +499,15 @@ const STATUS_TIMESTAMP: Partial<Record<OrderStatus, "preparingAt" | "readyAt" | 
   completed: "completedAt",
 };
 
+/** Kitchen staff may only move orders across the pass. */
+const KITCHEN_ONLY_TARGETS: OrderStatus[] = ["preparing", "ready"];
+
 export async function updateOrderStatusAction(orderId: string, next: OrderStatus): Promise<ActionResult> {
   try {
-    const auth = await assertPermission("orders.update");
+    const auth = await assertAnyPermission(["orders.update", "kitchen.update"]);
+    if (!auth.permissions.has("orders.update") && !KITCHEN_ONLY_TARGETS.includes(next)) {
+      return fail("forbidden");
+    }
     const order = await db.order.findFirst({ where: { id: orderId, orgId: auth.user.orgId } });
     if (!order) return fail("not_found");
     assertBranchAccess(auth, order.branchId);
@@ -522,6 +542,14 @@ export async function updateOrderStatusAction(orderId: string, next: OrderStatus
       );
     });
 
+    emitOrderEvent({
+      type: "order.updated",
+      branchId: order.branchId,
+      orderId: order.id,
+      number: order.number,
+      status: next,
+      orderType: order.type,
+    });
     revalidateOps();
     return ok();
   } catch (e) {
@@ -569,6 +597,14 @@ export async function cancelOrderAction(input: CancelOrderInput): Promise<Action
       );
     });
 
+    emitOrderEvent({
+      type: "order.cancelled",
+      branchId: order.branchId,
+      orderId: order.id,
+      number: order.number,
+      status: "cancelled",
+      orderType: order.type,
+    });
     revalidateOps();
     return ok();
   } catch (e) {
@@ -677,6 +713,14 @@ export async function mergeOrdersAction(sourceOrderId: string, targetOrderId: st
       );
     });
 
+    emitOrderEvent({
+      type: "order.updated",
+      branchId: source.branchId,
+      orderId: target.id,
+      number: target.number,
+      status: target.status,
+      orderType: target.type,
+    });
     revalidateOps();
     return ok();
   } catch (e) {
@@ -768,6 +812,14 @@ export async function splitOrderAction(orderId: string, itemIds: string[]): Prom
       return newOrder;
     });
 
+    emitOrderEvent({
+      type: "order.created",
+      branchId: order.branchId,
+      orderId: result.id,
+      number: result.number,
+      status: result.status,
+      orderType: result.type,
+    });
     revalidateOps();
     return ok({ newOrderId: result.id, newNumber: result.number });
   } catch (e) {

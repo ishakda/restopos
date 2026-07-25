@@ -322,6 +322,11 @@
     "discountReason": "السبب (مستحسن)",
     "discountPreview": "التخفيض المحسوب",
     "removeDiscount": "إزالة",
+    "orderReady": "الطلب #{number} جاهز!",
+    "online": "متصل",
+    "offline": "غير متصل",
+    "printKitchen": "تذكرة المطبخ",
+    "printReceipt": "الوصل",
     "errors": {
       "product_unavailable": "منتج في السلة لم يعد متوفرًا.",
       "modifiers_invalid": "خيارات غير صالحة لأحد المنتجات.",
@@ -412,6 +417,8 @@
     "refundAmount": "المبلغ (الحد {max})",
     "refundReason": "سبب الاسترجاع",
     "confirmRefund": "استرجاع",
+    "printReceipt": "طباعة الوصل",
+    "printKitchen": "تذكرة المطبخ",
     "errors": {
       "unpaid_balance": "يوجد مبلغ غير مدفوع",
       "refund_first": "استرجع المدفوعات قبل الإلغاء.",
@@ -457,5 +464,33 @@
       "table_name_taken": "اسم الطاولة موجود بالفعل.",
       "table_not_ready": "الطاولة قيد التنظيف."
     }
+  },
+  "kitchen": {
+    "title": "المطبخ",
+    "back": "رجوع",
+    "online": "متصل",
+    "offline": "غير متصل",
+    "empty": "لا توجد طلبات",
+    "tableShort": "طاولة",
+    "min": "د",
+    "actionFailed": "تعذر تنفيذ الإجراء.",
+    "columns": {
+      "confirmed": "جديدة",
+      "preparing": "قيد التحضير",
+      "ready": "جاهزة"
+    },
+    "actions": {
+      "start": "بدء التحضير",
+      "ready": "جاهز",
+      "recall": "إرجاع"
+    }
+  },
+  "print": {
+    "print": "طباعة",
+    "close": "إغلاق",
+    "cashier": "الكاشير",
+    "change": "الباقي المعاد",
+    "kitchenTicket": "المطبخ",
+    "nothingForPrinter": "لا عناصر لهذه الطابعة."
   }
 }

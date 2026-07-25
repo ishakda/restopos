@@ -322,6 +322,11 @@
     "discountReason": "Motif (recommandé)",
     "discountPreview": "Remise calculée",
     "removeDiscount": "Retirer",
+    "orderReady": "Commande #{number} PRÊTE !",
+    "online": "En ligne",
+    "offline": "Hors ligne",
+    "printKitchen": "Ticket cuisine",
+    "printReceipt": "Reçu",
     "errors": {
       "product_unavailable": "Un produit du panier n'est plus disponible.",
       "modifiers_invalid": "Options invalides pour un article.",
@@ -412,6 +417,8 @@
     "refundAmount": "Montant (max {max})",
     "refundReason": "Motif du remboursement",
     "confirmRefund": "Rembourser",
+    "printReceipt": "Imprimer le reçu",
+    "printKitchen": "Ticket cuisine",
     "errors": {
       "unpaid_balance": "Reste à payer",
       "refund_first": "Remboursez d'abord les paiements avant d'annuler.",
@@ -457,5 +464,33 @@
       "table_name_taken": "Ce nom de table existe déjà.",
       "table_not_ready": "Table en nettoyage."
     }
+  },
+  "kitchen": {
+    "title": "Cuisine",
+    "back": "Retour",
+    "online": "En ligne",
+    "offline": "Hors ligne",
+    "empty": "Aucune commande",
+    "tableShort": "Table",
+    "min": "min",
+    "actionFailed": "Action impossible.",
+    "columns": {
+      "confirmed": "Nouvelles",
+      "preparing": "En préparation",
+      "ready": "Prêtes"
+    },
+    "actions": {
+      "start": "COMMENCER",
+      "ready": "PRÊT",
+      "recall": "Rappeler"
+    }
+  },
+  "print": {
+    "print": "Imprimer",
+    "close": "Fermer",
+    "cashier": "Caissier",
+    "change": "Monnaie rendue",
+    "kitchenTicket": "CUISINE",
+    "nothingForPrinter": "Aucun article pour cette imprimante."
   }
 }

@@ -56,6 +56,7 @@ export default async function OrdersPage({
         rows={rows}
         detail={detail}
         methods={methods}
+        branchId={branch.id}
         locale={locale}
         filters={{ status: status ?? null, type: type ?? null, q: q ?? "" }}
         permissions={{

@@ -9,15 +9,19 @@ import {
   BadgePercent,
   Banknote,
   CheckCircle2,
+  ChefHat,
   ImageOff,
   Minus,
   Pencil,
   Plus,
+  Printer,
   Search,
   ShoppingCart,
   StickyNote,
   Trash2,
   UtensilsCrossed,
+  Wifi,
+  WifiOff,
 } from "lucide-react";
 
 import { createOrderAction, type CreatedOrderSummary } from "@/lib/actions/orders";
@@ -45,6 +49,7 @@ import {
   cartLineUnitPrice,
   type CartLine,
 } from "@/components/pos/cart-types";
+import { useOrderEvents } from "@/components/realtime/use-order-events";
 import { ItemConfigDialog } from "@/components/pos/item-config-dialog";
 import { PaymentDialog } from "@/components/pos/payment-dialog";
 import { DiscountDialog, type DiscountDraft } from "@/components/pos/discount-dialog";
@@ -97,6 +102,13 @@ export function PosScreen({ data, branchId, branchName, userName, canDiscount, c
   const [mobileCartOpen, setMobileCartOpen] = React.useState(false);
   const [createdOrder, setCreatedOrder] = React.useState<CreatedOrderSummary | null>(null);
   const [payOpen, setPayOpen] = React.useState(false);
+
+  // Realtime: kitchen marks READY → cashier is notified instantly (spec §34)
+  const connected = useOrderEvents(branchId, (event) => {
+    if (event.type === "order.updated" && event.status === "ready" && event.number) {
+      toast.success(t("orderReady", { number: event.number }), { duration: 8000 });
+    }
+  });
 
   // ---- Derived ---------------------------------------------------------------
   const filteredProducts = React.useMemo(() => {
@@ -448,7 +460,20 @@ export function PosScreen({ data, branchId, branchName, userName, canDiscount, c
           {t("title")}
         </div>
         <Badge variant="secondary">{branchName}</Badge>
-        <div className="ms-auto text-xs text-muted-foreground">{userName}</div>
+        <div className="ms-auto flex items-center gap-3 text-xs text-muted-foreground">
+          {connected ? (
+            <span className="flex items-center gap-1 text-success">
+              <Wifi className="h-3.5 w-3.5" />
+              {t("online")}
+            </span>
+          ) : (
+            <span className="flex items-center gap-1 text-destructive">
+              <WifiOff className="h-3.5 w-3.5" />
+              {t("offline")}
+            </span>
+          )}
+          <span>{userName}</span>
+        </div>
       </header>
 
       <div className="flex min-h-0 flex-1">
@@ -729,6 +754,20 @@ export function PosScreen({ data, branchId, branchName, userName, canDiscount, c
                 {t("payNow")}
               </Button>
             )}
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" className="flex-1" asChild>
+                <a href={`/print/kitchen/${createdOrder?.id}`} target="_blank" rel="noopener noreferrer">
+                  <ChefHat />
+                  {t("printKitchen")}
+                </a>
+              </Button>
+              <Button variant="outline" size="sm" className="flex-1" asChild>
+                <a href={`/print/receipt/${createdOrder?.id}`} target="_blank" rel="noopener noreferrer">
+                  <Printer />
+                  {t("printReceipt")}
+                </a>
+              </Button>
+            </div>
             <Button variant="outline" size="lg" onClick={resetCart}>
               {t("newOrder")}
             </Button>
