@@ -256,7 +256,11 @@ export function PosScreen({ data, branchId, branchName, userName, canDiscount, c
       setCreatedOrder(result.data);
       setMobileCartOpen(false);
     } else if (!result.ok) {
-      toast.error(t.has(`errors.${result.error}`) ? t(`errors.${result.error}`) : te("generic"));
+      if (result.error === "out_of_stock") {
+        toast.error(t("errors.out_of_stock", { name: result.fieldErrors?.ingredient?.[0] ?? "" }), { duration: 8000 });
+      } else {
+        toast.error(t.has(`errors.${result.error}`) ? t(`errors.${result.error}`) : te("generic"));
+      }
       if (result.error === "generic") setIdempotencyKey(crypto.randomUUID());
     }
   }

@@ -334,7 +334,8 @@
       "table_required": "Choose a table.",
       "phone_required": "Customer phone is required.",
       "address_required": "Delivery address is required.",
-      "table_not_ready": "This table is not ready (cleaning)."
+      "table_not_ready": "This table is not ready (cleaning).",
+      "out_of_stock": "Insufficient stock: {name}"
     }
   },
   "payments": {
@@ -463,6 +464,175 @@
       "table_has_open_order": "This table has an open order.",
       "table_name_taken": "This table name already exists.",
       "table_not_ready": "Table is being cleaned."
+    }
+  },
+  "inventory": {
+    "title": "Inventory",
+    "subtitle": "Stock levels — {branch}",
+    "stats": { "value": "Stock value", "low": "Low stock", "out": "Out of stock" },
+    "viewMovements": "Movements",
+    "table": {
+      "ingredient": "Ingredient",
+      "qty": "Quantity",
+      "min": "Min. level",
+      "value": "Value",
+      "location": "Location",
+      "status": "Status"
+    },
+    "level": { "ok": "OK", "low": "Low stock", "out": "Out of stock" },
+    "adjust": "Adjust (count)",
+    "adjustTitle": "Physical count — {name}",
+    "currentQty": "Current quantity",
+    "countedQty": "Counted quantity",
+    "unit": "Unit",
+    "adjustReason": "Reason (required)",
+    "adjustReasonPlaceholder": "E.g. monthly count, breakage…",
+    "thresholds": "Threshold & location",
+    "thresholdsTitle": "Thresholds — {name}",
+    "minQtyLabel": "Alert threshold",
+    "locationLabel": "Storage location",
+    "locationPlaceholder": "E.g. Cold room, Storeroom…",
+    "transfer": "Transfer",
+    "transferTitle": "Transfer — {name}",
+    "transferTo": "To branch",
+    "movementsTitle": "Stock movements",
+    "movementsSubtitle": "Auditable ledger — {branch}",
+    "allIngredients": "All ingredients",
+    "allTypes": "All types",
+    "noMovements": "No movements",
+    "mv": {
+      "date": "Date",
+      "type": "Type",
+      "change": "Change",
+      "after": "After",
+      "value": "Value",
+      "user": "By",
+      "reference": "Reference"
+    },
+    "mvType": {
+      "purchase": "Purchase",
+      "sale": "Sale",
+      "adjustment": "Adjustment",
+      "waste": "Waste",
+      "damage": "Damage",
+      "transfer_in": "Transfer in",
+      "transfer_out": "Transfer out",
+      "return": "Return",
+      "reversal": "Reversal"
+    },
+    "errors": {
+      "stock_conflict": "Stock changed while editing. Try again.",
+      "insufficient_stock": "Insufficient stock.",
+      "incompatible_units": "Incompatible unit."
+    }
+  },
+  "waste": {
+    "title": "Waste",
+    "subtitle": "Loss tracking — {branch}",
+    "monthLoss": "Losses this month",
+    "monthCount": "{count, plural, =0 {No records} one {# record} other {# records}}",
+    "record": "Record waste",
+    "unit": "Unit",
+    "notes": "Details",
+    "table": {
+      "date": "Date",
+      "ingredient": "Ingredient",
+      "qty": "Quantity",
+      "reason": "Reason",
+      "loss": "Loss",
+      "by": "By"
+    },
+    "reasons": {
+      "expired": "Expired",
+      "damaged": "Damaged",
+      "prep_error": "Preparation error",
+      "customer_return": "Customer return",
+      "other": "Other"
+    },
+    "errors": { "insufficient_stock": "Insufficient stock for this waste." }
+  },
+  "purchases": {
+    "title": "Purchases",
+    "subtitle": "Purchase orders — {branch}",
+    "newPo": "New purchase order",
+    "newPoSubtitle": "Supplier & lines — {branch}",
+    "empty": "No purchase orders",
+    "table": {
+      "number": "No.",
+      "supplier": "Supplier",
+      "date": "Date",
+      "status": "Status",
+      "payment": "Payment",
+      "total": "Total",
+      "ingredient": "Ingredient"
+    },
+    "status": {
+      "draft": "Draft",
+      "ordered": "Ordered",
+      "partially_received": "Partially received",
+      "received": "Received",
+      "cancelled": "Cancelled"
+    },
+    "payment": { "unpaid": "Unpaid", "partial": "Partial", "paid": "Paid" },
+    "infoSection": "Information",
+    "chooseSupplier": "Choose a supplier…",
+    "notes": "Notes",
+    "linesSection": "Order lines",
+    "qty": "Qty",
+    "unitCost": "Unit cost",
+    "addIngredient": "Add ingredient…",
+    "total": "Total",
+    "subtotal": "Subtotal",
+    "tax": "Tax",
+    "paid": "Paid",
+    "saveDraft": "Save draft",
+    "created": "PO {number} created.",
+    "markOrdered": "Place order",
+    "receive": "Receive",
+    "receiveTitle": "Receiving — {number}",
+    "receiveHint": "Enter the quantities received now (partial receiving supported).",
+    "remainingShort": "Remaining",
+    "confirmReceive": "Confirm receipt",
+    "receivedToast": "Receipt recorded — stock and average costs updated.",
+    "recordPayment": "Record payment",
+    "payAmount": "Amount",
+    "payMethod": "Payment method",
+    "ordered": "Ordered",
+    "received": "Received",
+    "paymentsSection": "Payments",
+    "errors": {
+      "po_not_editable": "Only drafts can be edited.",
+      "po_has_receipts": "Cannot cancel: receipts exist.",
+      "receive_exceeds_ordered": "Received quantity exceeds the order.",
+      "invalid_transition": "Transition not allowed."
+    }
+  },
+  "suppliers": {
+    "title": "Suppliers",
+    "subtitle": "{count, plural, one {# supplier} other {# suppliers}}",
+    "newSupplier": "New supplier",
+    "editSupplier": "Edit supplier",
+    "inactive": "Inactive",
+    "deactivatedInstead": "Supplier deactivated (history exists).",
+    "pay": "Pay",
+    "payTitle": "Payment — {name}",
+    "payAmount": "Amount",
+    "payMethod": "Payment method",
+    "table": {
+      "name": "Supplier",
+      "contact": "Contact",
+      "purchased": "Purchases",
+      "paid": "Paid",
+      "balance": "Balance due"
+    },
+    "fields": {
+      "name": "Name / company",
+      "contact": "Contact",
+      "phone": "Phone",
+      "email": "Email",
+      "address": "Address",
+      "notes": "Notes",
+      "active": "Active"
     }
   },
   "kitchen": {

@@ -29,6 +29,13 @@ import {
 import { canTransition, isOpenStatus } from "@/lib/order-status";
 import { dateKeyFor } from "@/lib/dates";
 import { getSettings } from "@/lib/settings";
+import {
+  OutOfStockError,
+  applyStockDeduction,
+  buildConsumption,
+  computeItemCostsMilli,
+  reverseOrderDeduction,
+} from "@/lib/stock-deduction";
 import { ORDER_NUMBER_PREFIX, type OrderStatus, type OrderType } from "@/lib/constants";
 
 function assertBranchAccess(auth: AuthContext, branchId: string) {
@@ -342,13 +349,16 @@ export async function createOrderAction(
     const prefix = ORDER_NUMBER_PREFIX[data.type as OrderType];
 
     try {
-      const created = await db.$transaction(async (tx) => {
+      const { order: created, emitAlerts } = await db.$transaction(async (tx) => {
         const counter = await tx.orderCounter.upsert({
           where: { branchId_scope_dateKey: { branchId, scope: "order", dateKey } },
           update: { seq: { increment: 1 } },
           create: { branchId, scope: "order", dateKey, seq: 1 },
         });
         const number = `${prefix}-${counter.seq + 100}`; // start daily numbering at 101
+
+        // Theoretical cost snapshots (millicentimes / unit) for profitability
+        const itemCosts = await computeItemCostsMilli(tx, built);
 
         const now = new Date();
         const order = await tx.order.create({
@@ -396,6 +406,8 @@ export async function createOrderAction(
               notes: item.notes,
               lineSubtotal: lineUnitPrice(item.line) * item.qty,
               lineTotal: lineTotal(item.line),
+              costSnapshotMilli: itemCosts.get(item) ?? null,
+              stockDeducted: true,
               modifiers: {
                 create: item.modifiers.map((m) => ({
                   modifierId: m.modifierId,
@@ -429,6 +441,18 @@ export async function createOrderAction(
           await tx.restaurantTable.update({ where: { id: table.id }, data: { status: "occupied" } });
         }
 
+        // Automatic recipe deduction (race-safe, ledger-backed) — spec §9/§10
+        const consumption = await buildConsumption(tx, built);
+        const emitAlertsCb = await applyStockDeduction(tx, {
+          orgId,
+          branchId,
+          orderId: order.id,
+          orderNumber: number,
+          userId: auth.user.id,
+          consumption,
+          policy: settings["stock.negativePolicy"],
+        });
+
         await writeAudit(
           {
             orgId,
@@ -442,8 +466,10 @@ export async function createOrderAction(
           tx
         );
 
-        return order;
+        return { order, emitAlerts: emitAlertsCb };
       });
+
+      emitAlerts();
 
       emitOrderEvent({
         type: "order.created",
@@ -478,6 +504,9 @@ export async function createOrderAction(
             deliveryFee: winner.deliveryFee,
           });
         }
+      }
+      if (e instanceof OutOfStockError) {
+        return fail("out_of_stock", { ingredient: [e.ingredientName] });
       }
       throw e;
     }
@@ -581,6 +610,16 @@ export async function cancelOrderAction(input: CancelOrderInput): Promise<Action
           version: { increment: 1 },
         },
       });
+      // Restock ONLY pre-kitchen cancellations; prepared food is waste, not stock.
+      if (order.status === "confirmed") {
+        await reverseOrderDeduction(tx, {
+          orgId: auth.user.orgId,
+          branchId: order.branchId,
+          orderId: order.id,
+          orderNumber: order.number,
+          userId: auth.user.id,
+        });
+      }
       if (order.tableId) await releaseTable(tx, order.tableId, order.id);
       await writeAudit(
         {
@@ -680,6 +719,10 @@ export async function mergeOrdersAction(sourceOrderId: string, targetOrderId: st
 
     await db.$transaction(async (tx) => {
       await tx.orderItem.updateMany({ where: { orderId: source.id }, data: { orderId: target.id } });
+      // The goods follow the bill: re-point the ledger's ORDER REFERENCE only
+      // (quantities/before/after stay untouched) so a later pre-kitchen
+      // cancellation of the target reverses everything it actually holds.
+      await tx.stockMovement.updateMany({ where: { orderId: source.id }, data: { orderId: target.id } });
       await tx.order.update({
         where: { id: source.id },
         data: {

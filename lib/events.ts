@@ -16,6 +16,8 @@ export interface OrderEvent {
   number?: string;
   status?: string;
   orderType?: string;
+  /** human label for non-order events (e.g. ingredient name on stock.alert) */
+  label?: string;
   at: string;
 }
 

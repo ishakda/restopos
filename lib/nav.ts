@@ -52,11 +52,11 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       { key: "menu", href: "/menu", icon: "menu", permission: "menu.view", implemented: true },
       { key: "ingredients", href: "/ingredients", icon: "ingredients", permission: "inventory.view", implemented: true },
-      { key: "inventory", href: "/inventory", icon: "inventory", permission: "inventory.view", implemented: false },
-      { key: "stockMovements", href: "/inventory/movements", icon: "movements", permission: "inventory.view", implemented: false },
-      { key: "waste", href: "/waste", icon: "waste", permission: "waste.view", implemented: false },
-      { key: "purchases", href: "/purchases", icon: "purchases", permission: "purchases.view", implemented: false },
-      { key: "suppliers", href: "/suppliers", icon: "suppliers", permission: "suppliers.view", implemented: false },
+      { key: "inventory", href: "/inventory", icon: "inventory", permission: "inventory.view", implemented: true },
+      { key: "stockMovements", href: "/inventory/movements", icon: "movements", permission: "inventory.view", implemented: true },
+      { key: "waste", href: "/waste", icon: "waste", permission: "waste.view", implemented: true },
+      { key: "purchases", href: "/purchases", icon: "purchases", permission: "purchases.view", implemented: true },
+      { key: "suppliers", href: "/suppliers", icon: "suppliers", permission: "suppliers.view", implemented: true },
     ],
   },
   {

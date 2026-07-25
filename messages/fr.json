@@ -334,7 +334,8 @@
       "table_required": "Choisissez une table.",
       "phone_required": "Le téléphone du client est requis.",
       "address_required": "L'adresse de livraison est requise.",
-      "table_not_ready": "Cette table n'est pas prête (nettoyage)."
+      "table_not_ready": "Cette table n'est pas prête (nettoyage).",
+      "out_of_stock": "Stock insuffisant : {name}"
     }
   },
   "payments": {
@@ -463,6 +464,175 @@
       "table_has_open_order": "Cette table a une commande en cours.",
       "table_name_taken": "Ce nom de table existe déjà.",
       "table_not_ready": "Table en nettoyage."
+    }
+  },
+  "inventory": {
+    "title": "Stock",
+    "subtitle": "État du stock — {branch}",
+    "stats": { "value": "Valeur du stock", "low": "Stock bas", "out": "Ruptures" },
+    "viewMovements": "Mouvements",
+    "table": {
+      "ingredient": "Ingrédient",
+      "qty": "Quantité",
+      "min": "Seuil min.",
+      "value": "Valeur",
+      "location": "Emplacement",
+      "status": "État"
+    },
+    "level": { "ok": "OK", "low": "Stock bas", "out": "Rupture" },
+    "adjust": "Ajuster (inventaire)",
+    "adjustTitle": "Inventaire — {name}",
+    "currentQty": "Quantité actuelle",
+    "countedQty": "Quantité comptée",
+    "unit": "Unité",
+    "adjustReason": "Motif (obligatoire)",
+    "adjustReasonPlaceholder": "Ex. : inventaire mensuel, casse…",
+    "thresholds": "Seuil & emplacement",
+    "thresholdsTitle": "Seuils — {name}",
+    "minQtyLabel": "Seuil d'alerte",
+    "locationLabel": "Emplacement de stockage",
+    "locationPlaceholder": "Ex. : Chambre froide, Réserve…",
+    "transfer": "Transférer",
+    "transferTitle": "Transfert — {name}",
+    "transferTo": "Vers le point de vente",
+    "movementsTitle": "Mouvements de stock",
+    "movementsSubtitle": "Journal auditable — {branch}",
+    "allIngredients": "Tous les ingrédients",
+    "allTypes": "Tous les types",
+    "noMovements": "Aucun mouvement",
+    "mv": {
+      "date": "Date",
+      "type": "Type",
+      "change": "Variation",
+      "after": "Après",
+      "value": "Valeur",
+      "user": "Par",
+      "reference": "Référence"
+    },
+    "mvType": {
+      "purchase": "Achat",
+      "sale": "Vente",
+      "adjustment": "Ajustement",
+      "waste": "Perte",
+      "damage": "Casse",
+      "transfer_in": "Transfert (entrée)",
+      "transfer_out": "Transfert (sortie)",
+      "return": "Retour",
+      "reversal": "Annulation"
+    },
+    "errors": {
+      "stock_conflict": "Le stock a changé pendant la saisie. Réessayez.",
+      "insufficient_stock": "Stock insuffisant.",
+      "incompatible_units": "Unité incompatible."
+    }
+  },
+  "waste": {
+    "title": "Pertes & gaspillage",
+    "subtitle": "Suivi des pertes — {branch}",
+    "monthLoss": "Pertes ce mois-ci",
+    "monthCount": "{count, plural, =0 {Aucun enregistrement} one {# enregistrement} other {# enregistrements}}",
+    "record": "Déclarer une perte",
+    "unit": "Unité",
+    "notes": "Détails",
+    "table": {
+      "date": "Date",
+      "ingredient": "Ingrédient",
+      "qty": "Quantité",
+      "reason": "Motif",
+      "loss": "Perte",
+      "by": "Par"
+    },
+    "reasons": {
+      "expired": "Périmé",
+      "damaged": "Endommagé",
+      "prep_error": "Erreur de préparation",
+      "customer_return": "Retour client",
+      "other": "Autre"
+    },
+    "errors": { "insufficient_stock": "Stock insuffisant pour cette perte." }
+  },
+  "purchases": {
+    "title": "Achats",
+    "subtitle": "Bons de commande — {branch}",
+    "newPo": "Nouveau bon de commande",
+    "newPoSubtitle": "Fournisseur & lignes — {branch}",
+    "empty": "Aucun bon de commande",
+    "table": {
+      "number": "N°",
+      "supplier": "Fournisseur",
+      "date": "Date",
+      "status": "Statut",
+      "payment": "Paiement",
+      "total": "Total",
+      "ingredient": "Ingrédient"
+    },
+    "status": {
+      "draft": "Brouillon",
+      "ordered": "Commandé",
+      "partially_received": "Partiellement reçu",
+      "received": "Reçu",
+      "cancelled": "Annulé"
+    },
+    "payment": { "unpaid": "Non payé", "partial": "Partiel", "paid": "Payé" },
+    "infoSection": "Informations",
+    "chooseSupplier": "Choisir un fournisseur…",
+    "notes": "Notes",
+    "linesSection": "Lignes de commande",
+    "qty": "Qté",
+    "unitCost": "Coût unitaire",
+    "addIngredient": "Ajouter un ingrédient…",
+    "total": "Total",
+    "subtotal": "Sous-total",
+    "tax": "Taxes",
+    "paid": "Payé",
+    "saveDraft": "Enregistrer le brouillon",
+    "created": "Bon {number} créé.",
+    "markOrdered": "Passer la commande",
+    "receive": "Réceptionner",
+    "receiveTitle": "Réception — {number}",
+    "receiveHint": "Saisissez les quantités reçues maintenant (réception partielle possible).",
+    "remainingShort": "Restant",
+    "confirmReceive": "Valider la réception",
+    "receivedToast": "Réception enregistrée — stock et coûts moyens mis à jour.",
+    "recordPayment": "Enregistrer un paiement",
+    "payAmount": "Montant",
+    "payMethod": "Mode de paiement",
+    "ordered": "Commandé",
+    "received": "Reçu",
+    "paymentsSection": "Paiements",
+    "errors": {
+      "po_not_editable": "Seuls les brouillons sont modifiables.",
+      "po_has_receipts": "Impossible d'annuler : des réceptions existent.",
+      "receive_exceeds_ordered": "Quantité reçue supérieure à la commande.",
+      "invalid_transition": "Transition impossible."
+    }
+  },
+  "suppliers": {
+    "title": "Fournisseurs",
+    "subtitle": "{count, plural, one {# fournisseur} other {# fournisseurs}}",
+    "newSupplier": "Nouveau fournisseur",
+    "editSupplier": "Modifier le fournisseur",
+    "inactive": "Inactif",
+    "deactivatedInstead": "Fournisseur désactivé (historique existant).",
+    "pay": "Payer",
+    "payTitle": "Paiement — {name}",
+    "payAmount": "Montant",
+    "payMethod": "Mode de paiement",
+    "table": {
+      "name": "Fournisseur",
+      "contact": "Contact",
+      "purchased": "Achats",
+      "paid": "Payé",
+      "balance": "Solde dû"
+    },
+    "fields": {
+      "name": "Nom / société",
+      "contact": "Contact",
+      "phone": "Téléphone",
+      "email": "E-mail",
+      "address": "Adresse",
+      "notes": "Notes",
+      "active": "Actif"
     }
   },
   "kitchen": {

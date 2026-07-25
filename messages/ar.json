@@ -334,7 +334,8 @@
       "table_required": "اختر طاولة.",
       "phone_required": "هاتف الزبون مطلوب.",
       "address_required": "عنوان التوصيل مطلوب.",
-      "table_not_ready": "هذه الطاولة غير جاهزة (تنظيف)."
+      "table_not_ready": "هذه الطاولة غير جاهزة (تنظيف).",
+      "out_of_stock": "المخزون غير كافٍ: {name}"
     }
   },
   "payments": {
@@ -463,6 +464,175 @@
       "table_has_open_order": "لهذه الطاولة طلب جارٍ.",
       "table_name_taken": "اسم الطاولة موجود بالفعل.",
       "table_not_ready": "الطاولة قيد التنظيف."
+    }
+  },
+  "inventory": {
+    "title": "المخزون",
+    "subtitle": "حالة المخزون — {branch}",
+    "stats": { "value": "قيمة المخزون", "low": "مخزون منخفض", "out": "نفاد" },
+    "viewMovements": "الحركات",
+    "table": {
+      "ingredient": "المكوّن",
+      "qty": "الكمية",
+      "min": "الحد الأدنى",
+      "value": "القيمة",
+      "location": "الموقع",
+      "status": "الحالة"
+    },
+    "level": { "ok": "جيد", "low": "منخفض", "out": "نفد" },
+    "adjust": "جرد (تعديل)",
+    "adjustTitle": "جرد — {name}",
+    "currentQty": "الكمية الحالية",
+    "countedQty": "الكمية المعدودة",
+    "unit": "الوحدة",
+    "adjustReason": "السبب (إجباري)",
+    "adjustReasonPlaceholder": "مثال: جرد شهري، كسر…",
+    "thresholds": "الحد الأدنى والموقع",
+    "thresholdsTitle": "الحدود — {name}",
+    "minQtyLabel": "حد التنبيه",
+    "locationLabel": "موقع التخزين",
+    "locationPlaceholder": "مثال: غرفة التبريد، المخزن…",
+    "transfer": "تحويل",
+    "transferTitle": "تحويل — {name}",
+    "transferTo": "إلى نقطة البيع",
+    "movementsTitle": "حركات المخزون",
+    "movementsSubtitle": "سجل قابل للتدقيق — {branch}",
+    "allIngredients": "كل المكوّنات",
+    "allTypes": "كل الأنواع",
+    "noMovements": "لا حركات",
+    "mv": {
+      "date": "التاريخ",
+      "type": "النوع",
+      "change": "التغيير",
+      "after": "بعد",
+      "value": "القيمة",
+      "user": "بواسطة",
+      "reference": "المرجع"
+    },
+    "mvType": {
+      "purchase": "شراء",
+      "sale": "بيع",
+      "adjustment": "تعديل",
+      "waste": "خسارة",
+      "damage": "تلف",
+      "transfer_in": "تحويل (دخول)",
+      "transfer_out": "تحويل (خروج)",
+      "return": "إرجاع",
+      "reversal": "إلغاء"
+    },
+    "errors": {
+      "stock_conflict": "تغيّر المخزون أثناء الإدخال. أعد المحاولة.",
+      "insufficient_stock": "المخزون غير كافٍ.",
+      "incompatible_units": "وحدة غير متوافقة."
+    }
+  },
+  "waste": {
+    "title": "الخسائر والهدر",
+    "subtitle": "متابعة الخسائر — {branch}",
+    "monthLoss": "خسائر هذا الشهر",
+    "monthCount": "{count, plural, =0 {لا تسجيلات} one {تسجيل واحد} two {تسجيلان} few {# تسجيلات} many {# تسجيلًا} other {# تسجيل}}",
+    "record": "تسجيل خسارة",
+    "unit": "الوحدة",
+    "notes": "تفاصيل",
+    "table": {
+      "date": "التاريخ",
+      "ingredient": "المكوّن",
+      "qty": "الكمية",
+      "reason": "السبب",
+      "loss": "الخسارة",
+      "by": "بواسطة"
+    },
+    "reasons": {
+      "expired": "منتهي الصلاحية",
+      "damaged": "تالف",
+      "prep_error": "خطأ تحضير",
+      "customer_return": "إرجاع زبون",
+      "other": "أخرى"
+    },
+    "errors": { "insufficient_stock": "المخزون غير كافٍ لهذه الخسارة." }
+  },
+  "purchases": {
+    "title": "المشتريات",
+    "subtitle": "أوامر الشراء — {branch}",
+    "newPo": "أمر شراء جديد",
+    "newPoSubtitle": "المورد والبنود — {branch}",
+    "empty": "لا أوامر شراء",
+    "table": {
+      "number": "الرقم",
+      "supplier": "المورد",
+      "date": "التاريخ",
+      "status": "الحالة",
+      "payment": "الدفع",
+      "total": "المجموع",
+      "ingredient": "المكوّن"
+    },
+    "status": {
+      "draft": "مسودة",
+      "ordered": "مطلوب",
+      "partially_received": "استلام جزئي",
+      "received": "مستلم",
+      "cancelled": "ملغى"
+    },
+    "payment": { "unpaid": "غير مدفوع", "partial": "جزئي", "paid": "مدفوع" },
+    "infoSection": "معلومات",
+    "chooseSupplier": "اختر موردًا…",
+    "notes": "ملاحظات",
+    "linesSection": "بنود الطلب",
+    "qty": "الكمية",
+    "unitCost": "تكلفة الوحدة",
+    "addIngredient": "إضافة مكوّن…",
+    "total": "المجموع",
+    "subtotal": "المجموع الفرعي",
+    "tax": "الرسوم",
+    "paid": "المدفوع",
+    "saveDraft": "حفظ المسودة",
+    "created": "أُنشئ الأمر {number}.",
+    "markOrdered": "إرسال الطلب",
+    "receive": "استلام",
+    "receiveTitle": "الاستلام — {number}",
+    "receiveHint": "أدخل الكميات المستلمة الآن (يمكن الاستلام الجزئي).",
+    "remainingShort": "المتبقي",
+    "confirmReceive": "تأكيد الاستلام",
+    "receivedToast": "سُجّل الاستلام — تم تحديث المخزون ومتوسط التكاليف.",
+    "recordPayment": "تسجيل دفعة",
+    "payAmount": "المبلغ",
+    "payMethod": "طريقة الدفع",
+    "ordered": "المطلوب",
+    "received": "المستلم",
+    "paymentsSection": "المدفوعات",
+    "errors": {
+      "po_not_editable": "المسودات فقط قابلة للتعديل.",
+      "po_has_receipts": "لا يمكن الإلغاء: توجد استلامات.",
+      "receive_exceeds_ordered": "الكمية المستلمة تتجاوز الطلب.",
+      "invalid_transition": "التحويل غير ممكن."
+    }
+  },
+  "suppliers": {
+    "title": "الموردون",
+    "subtitle": "{count, plural, one {مورد واحد} two {موردان} few {# موردين} many {# موردًا} other {# مورد}}",
+    "newSupplier": "مورد جديد",
+    "editSupplier": "تعديل المورد",
+    "inactive": "غير نشط",
+    "deactivatedInstead": "عُطّل المورد (له سجل).",
+    "pay": "دفع",
+    "payTitle": "دفع — {name}",
+    "payAmount": "المبلغ",
+    "payMethod": "طريقة الدفع",
+    "table": {
+      "name": "المورد",
+      "contact": "جهة الاتصال",
+      "purchased": "المشتريات",
+      "paid": "المدفوع",
+      "balance": "الرصيد المستحق"
+    },
+    "fields": {
+      "name": "الاسم / الشركة",
+      "contact": "جهة الاتصال",
+      "phone": "الهاتف",
+      "email": "البريد الإلكتروني",
+      "address": "العنوان",
+      "notes": "ملاحظات",
+      "active": "نشط"
     }
   },
   "kitchen": {
