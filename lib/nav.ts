@@ -50,8 +50,8 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     key: "groupCatalog",
     items: [
-      { key: "menu", href: "/menu", icon: "menu", permission: "menu.view", implemented: false },
-      { key: "ingredients", href: "/ingredients", icon: "ingredients", permission: "inventory.view", implemented: false },
+      { key: "menu", href: "/menu", icon: "menu", permission: "menu.view", implemented: true },
+      { key: "ingredients", href: "/ingredients", icon: "ingredients", permission: "inventory.view", implemented: true },
       { key: "inventory", href: "/inventory", icon: "inventory", permission: "inventory.view", implemented: false },
       { key: "stockMovements", href: "/inventory/movements", icon: "movements", permission: "inventory.view", implemented: false },
       { key: "waste", href: "/waste", icon: "waste", permission: "waste.view", implemented: false },

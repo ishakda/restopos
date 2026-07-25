@@ -162,3 +162,18 @@ export async function assertPermission(code: string): Promise<AuthContext> {
   if (!auth.permissions.has(code)) throw new ForbiddenError(code);
   return auth;
 }
+
+/** Any-of variant (e.g. ingredients readable by menu managers OR stock staff). */
+export async function assertAnyPermission(codes: string[]): Promise<AuthContext> {
+  const auth = await getSession();
+  if (!auth) throw new ForbiddenError("authenticated");
+  if (!codes.some((c) => auth.permissions.has(c))) throw new ForbiddenError(codes.join("|"));
+  return auth;
+}
+
+/** Page variant of any-of. */
+export async function requireAnyPermissionPage(codes: string[]): Promise<AuthContext> {
+  const auth = await requireAuth();
+  if (!codes.some((c) => auth.permissions.has(c))) redirect("/");
+  return auth;
+}
