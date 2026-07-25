@@ -1,0 +1,42 @@
+import {
+  LayoutDashboard,
+  ShoppingCart,
+  ReceiptText,
+  ChefHat,
+  LayoutGrid,
+  BookOpen,
+  Carrot,
+  Boxes,
+  ArrowLeftRight,
+  Trash2,
+  PackagePlus,
+  Truck,
+  Users,
+  Wallet,
+  IdCard,
+  BarChart3,
+  Settings,
+  type LucideIcon,
+} from "lucide-react";
+
+import type { NavIcon } from "@/lib/nav";
+
+export const NAV_ICONS: Record<NavIcon, LucideIcon> = {
+  dashboard: LayoutDashboard,
+  pos: ShoppingCart,
+  orders: ReceiptText,
+  kitchen: ChefHat,
+  tables: LayoutGrid,
+  menu: BookOpen,
+  ingredients: Carrot,
+  inventory: Boxes,
+  movements: ArrowLeftRight,
+  waste: Trash2,
+  purchases: PackagePlus,
+  suppliers: Truck,
+  customers: Users,
+  expenses: Wallet,
+  employees: IdCard,
+  reports: BarChart3,
+  settings: Settings,
+};
