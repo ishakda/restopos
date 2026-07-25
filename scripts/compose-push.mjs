@@ -10,7 +10,11 @@ import fs from "node:fs";
 const [owner = "ishakda", repo = "restopos", branch = "main", prefix = "RestoPOS update"] =
   process.argv.slice(2);
 
-const raw = execSync("git ls-files", { maxBuffer: 64 * 1024 * 1024 }).toString("utf8");
+const since = process.env.CHANGED_SINCE;
+const listCmd = since
+  ? `git diff --name-only --diff-filter=ACMR ${since} HEAD`
+  : "git ls-files";
+const raw = execSync(listCmd, { maxBuffer: 64 * 1024 * 1024 }).toString("utf8");
 const files = raw
   .split("\n")
   .map((s) => s.trim())
